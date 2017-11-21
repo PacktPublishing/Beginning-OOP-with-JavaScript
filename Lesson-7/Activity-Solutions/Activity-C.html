@@ -1,0 +1,70 @@
+<html>
+<head>
+  <script type="text/javascript">
+    window.onload = function() {
+      function delay(nMilliseconds) {
+        return new Promise(function(resolve, reject) {
+          setTimeout(resolve, nMilliseconds);
+        });
+      }
+
+      var timeoutMessage = document.getElementById("timeoutMessage");
+      var question1 = document.getElementById("question1");
+      var question2 = document.getElementById("question2");
+      var finalMessage = document.getElementById("finalMessage");
+
+      timeoutMessage.style.visibility = "hidden";
+      question1.style.visibility = "visible";
+      question2.style.visibility = "hidden";
+      finalMessage.style.visibility = "hidden";
+
+      delay(10000)
+        .then(function() {
+          timeoutMessage.style.visibility = "visible";
+
+          return delay(3000);
+        })
+        .then(function() {
+          timeoutMessage.style.visibility = "hidden";
+          question1.style.visibility = "hidden";
+          question2.style.visibility = "visible";
+
+          return delay(10000);
+        })
+        .then(function() {
+          timeoutMessage.style.visibility = "visible";
+
+          return delay(3000);
+        })
+        .then(function() {
+          timeoutMessage.style.visibility = "hidden";
+          question2.style.visibility = "hidden";
+          finalMessage.style.visibility = "visible";
+        });
+    };
+  </script>
+</head>
+<body>
+  <div id="timeoutMessage">Your time is expired! You will be redirected to the next question
+    <div>
+      <div id="question1">
+        <p>Question 1</p>
+
+        <label><input type="radio"> Answer1</label>
+        <label><input type="radio"> Answer2</label>
+        <label><input type="radio"> Answer3</label>
+      </div>
+
+      <div id="question2">
+        <p>Question 2</p>
+
+        <label><input type="radio"> Answer1</label>
+        <label><input type="radio"> Answer2</label>
+        <label><input type="radio"> Answer3</label>
+      </div>
+
+      <div id="finalMessage">The End
+        <div>
+
+</body>
+</html>

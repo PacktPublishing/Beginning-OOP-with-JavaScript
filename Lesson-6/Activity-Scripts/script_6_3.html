@@ -1,0 +1,153 @@
+<html>
+<head>
+<script>
+class Reservation {
+  constructor(reservationId, reservationDate, hotelName, roomNumber, customerName, customerEmail) {
+    this.id = reservationId || -1;
+    this.date = reservationDate || new Date();
+    this.hotelName = hotelName || "";
+    this.roomNumber = roomNumber || "";
+    this.customerName = customerName || "";
+    this.customerEmail = customerEmail || "";
+  }
+}
+
+class View { 
+  constructor(viewModel) { 
+    var self = this;
+    var txtDate = document.getElementById("txtDate"); 
+    var txtHotel = document.getElementById("txtHotel");
+	var txtRoomNumber = document.getElementById("txtRoomNumber");
+	var txtCustomerName = document.getElementById("txtCustomerName");
+	var txtCustomerEmail = document.getElementById("txtCustomerEmail");
+    var btnSave = document.getElementById("btnSave"); 
+    var btnReset = document.getElementById("btnReset"); 
+ 
+    self.viewModel = viewModel; 
+ 
+    txtDate.value = viewModel.date; 
+    txtHotel.value = viewModel.hotelName;
+	txtRoomNumber.value = viewModel.roomNumber;
+	txtCustomerName.value = viewModel.customerName;
+	txtCustomerEmail.value = viewModel.customerEmail;
+ 
+    btnSave.onclick = function() { 
+      self.save(); 
+    }; 
+ 
+    btnReset.onclick =  function() { 
+      self.clear(); 
+    }; 
+  } 
+ 
+  clear() {
+    var txtDate = document.getElementById("txtDate"); 
+    var txtHotel = document.getElementById("txtHotel");
+	var txtRoomNumber = document.getElementById("txtRoomNumber");
+	var txtCustomerName = document.getElementById("txtCustomerName");
+	var txtCustomerEmail = document.getElementById("txtCustomerEmail"); 
+    var divMessage = document.getElementById("divMessage"); 
+ 
+ 
+    txtDate.value = ""; 
+    txtHotel.value = "";
+	txtRoomNumber.value = "";
+	txtCustomerName.value = "";
+	txtCustomerEmail.value = "";
+    divMessage.innerHTML = ""; 
+  } 
+ 
+  setMessage(message) { 
+    var divMessage = document.getElementById("divMessage"); 
+ 
+    divMessage.innerHTML = message; 
+  } 
+ 
+  save() {
+    var txtDate = document.getElementById("txtDate"); 
+    var txtHotel = document.getElementById("txtHotel");
+	var txtRoomNumber = document.getElementById("txtRoomNumber");
+	var txtCustomerName = document.getElementById("txtCustomerName");
+	var txtCustomerEmail = document.getElementById("txtCustomerEmail");
+ 
+    var data = {
+	  id: Math.floor((Math.random() * 1000) + 1),
+      date: txtDate.value, 
+      hotelName: txtHotel.value,
+	  roomNumber: txtRoomNumber.value,
+	  customerName: txtCustomerName.value,
+	  customerEmail: txtCustomerEmail.value
+    }; 
+ 
+    this.viewModel.save(data, this.setMessage); 
+  } 
+}
+
+class ViewModel { 
+  constructor(model) { 
+    this.model = model; 
+  } 
+ 
+  get id() { 
+    return this.model.id; 
+  } 
+  get date() { 
+    return this.model.date; 
+  }
+  get hotelName() { 
+    return this.model.hotelName; 
+  }
+  get roomNumber() { 
+    return this.model.roomNumber; 
+  }
+  get customerName() { 
+    return this.model.customerName; 
+  }
+  get customerEmail() { 
+    return this.model.customerEmail; 
+  }
+ 
+  save(data, callback) { 
+    if (data.id && data.date && data.hotelName && data.roomNumber && data.customerName && data.customerEmail) { 
+      this.model.id = data.id; 
+      this.model.date = data.date;
+	  this.model.hotelName = data.hotelName;
+	  this.model.roomNumber = data.roomNumber;
+	  this.model.customerName = data.customerName;
+	  this.model.customerEmail = data.customerEmail;
+	  
+      if (callback) { 
+        callback("Your reservation id is " + this.model.id + "!"); 
+      } 
+    } else { 
+        if (callback) { 
+          callback("Please, enter required data!"); 
+        } 
+    } 
+  } 
+} 
+
+
+window.onload = function() {
+  var reservation = new Reservation(0, new Date());
+
+  var viewModel = new ViewModel(reservation); 
+  var view = new View(viewModel);
+
+};
+
+</script>
+</head>
+<body>
+
+<label>Date<input type="text" id="txtDate"></label><br/>
+<label>Hotel <input type="text" id="txtHotel"></label><br/>
+<label>Room n. <input type="text" id="txtRoomNumber"></label><br/>
+<label>Customer name <input type="text" id="txtCustomerName"></label><br/>
+<label>Customer e-mail <input type="text" id="txtCustomerEmail"></label><br/>
+<div id="divMessage"></div>
+<button id="btnSave">Save</button>
+<button id="btnReset">Reset</button>
+
+</body>
+</html>

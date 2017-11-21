@@ -1,0 +1,68 @@
+<html>
+
+<head>
+<script>
+var person;
+var txtName;
+var txtSurname;
+var btnSave;
+var message;
+
+function Person(name, surname) {
+  this.name = name;
+  this.surname = surname;
+}
+
+function savePerson(person) {
+  //Persist data or send it to a server
+  console.log("Saved!");
+}
+
+window.onload = function() {
+  txtName = document.getElementById("txtName");
+  txtSurname = document.getElementById("txtSurname");
+  btnSave = document.getElementById("btnSave");
+  btnReset = document.getElementById("btnReset");
+  message = document.getElementById("message");
+  message.style.visibility = "hidden";
+
+  person = new Person("John", "Smith");
+
+  txtName.value = person.name;
+  txtSurname.value = person.surname;
+
+  btnSave.onclick = function() {
+    if (txtName.value && txtSurname.value) {
+      person.name = txtName.value;
+      person.surname = txtSurname.value;
+      
+      savePerson(person);
+      message.innerHTML = "Saved!";
+    } else {
+      message.innerHTML = "Please, enter name and surname!";
+    }
+    message.style.visibility = "visible";
+  };
+
+  btnReset.onclick = function() {
+    txtName.value = "";
+    txtSurname.value = "";
+    message.innerHTML = "";
+    message.style.visibility = "hidden";
+
+    person.name = "";
+    person.surname = "";
+  };
+};
+</script>
+</head>
+<body>
+
+<label>Name &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="txtName"></label><br/>
+<label>Surname <input type="text" id="txtSurname"></label><br/>
+<textarea id="message"></textarea>
+<button id="btnSave">Save</button>
+<button id="btnReset">Reset</button>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<html>
+<head>
+<script>
+class Reservation {
+  constructor(reservationId, reservationDate, hotelName, roomNumber, customerName, customerEmail) {
+    this.id = reservationId || -1;
+    this.date = reservationDate || new Date();
+    this.hotelName = hotelName || "";
+    this.roomNumber = roomNumber || "";
+    this.customerName = customerName || "";
+    this.customerEmail = customerEmail || "";
+  }
+}
+
+function Binder() {}
+
+Binder.prototype.bindTo =
+  function(dataSourceObj, dataSourceProperty, dataTargetObj, dataTargetProperty) {
+    Object.defineProperty(dataSourceObj, dataSourceProperty, { get: function() { return dataTargetObj[dataTargetProperty]; } 
+    });
+  };
+
+Binder.prototype.bindTwoWay =
+  function(dataSourceObj, dataSourceProperty, dataTargetObj, dataTargetProperty) {
+    Object.defineProperty(dataSourceObj, dataSourceProperty, {
+      get: function() {
+        return dataTargetObj[dataTargetProperty];
+      },
+      set: function(newValue) {
+        dataTargetObj[dataTargetProperty] = newValue;
+      }
+    });
+  };
+
+class View {
+  constructor(viewModel) {
+    var self = this;
+    var txtDate = document.getElementById("txtDate");
+    var txtHotel = document.getElementById("txtHotel");
+    var txtRoomNumber = document.getElementById("txtRoomNumber");
+    var txtCustomerName = document.getElementById("txtCustomerName");
+    var txtCustomerEmail = document.getElementById("txtCustomerEmail");
+    var btnSave = document.getElementById("btnSave");
+    var btnReset = document.getElementById("btnReset");
+
+    self.viewModel = viewModel;
+
+    txtDate.value = viewModel.date;
+    txtHotel.value = viewModel.hotelName;
+    txtRoomNumber.value = viewModel.roomNumber;
+    txtCustomerName.value = viewModel.customerName;
+    txtCustomerEmail.value = viewModel.customerEmail;
+
+    btnSave.onclick = function() {
+      self.save();
+    };
+
+    btnReset.onclick =  function() {
+      self.clear();
+    };
+  }
+
+  clear() {
+
+    var txtDate = document.getElementById("txtDate");
+    var txtHotel = document.getElementById("txtHotel");
+    var txtRoomNumber = document.getElementById("txtRoomNumber");
+    var txtCustomerName = document.getElementById("txtCustomerName");
+    var txtCustomerEmail = document.getElementById("txtCustomerEmail");
+    var divMessage = document.getElementById("divMessage");
+
+
+    txtDate.value = "";
+    txtHotel.value = "";
+    txtRoomNumber.value = "";
+    txtCustomerName.value = "";
+    txtCustomerEmail.value = "";
+    divMessage.innerHTML = "";
+  }
+
+  setMessage(message) {
+    var divMessage = document.getElementById("divMessage");
+
+    divMessage.innerHTML = message;
+  }
+
+  save() {
+
+    var txtDate = document.getElementById("txtDate");
+    var txtHotel = document.getElementById("txtHotel");
+    var txtRoomNumber = document.getElementById("txtRoomNumber");
+    var txtCustomerName = document.getElementById("txtCustomerName");
+    var txtCustomerEmail = document.getElementById("txtCustomerEmail");
+
+    var data = {
+   id: Math.floor((Math.random() * 1000) + 1),
+      date: txtDate.value,
+      hotelName: txtHotel.value,
+      roomNumber: txtRoomNumber.value,
+      customerName: txtCustomerName.value,
+      customerEmail: txtCustomerEmail.value
+    };
+
+    this.viewModel.save(data, this.setMessage);
+  }
+}
+
+class ViewModel {
+  constructor(model) {
+    var binder = new Binder();
+
+    binder.bindTwoWay(this, "id", model, "id");
+    binder.bindTwoWay(this, "date", model, "date");
+    binder.bindTwoWay(this, "hotelName", model, "hotelName");
+    binder.bindTwoWay(this, "roomNumber", model, "roomNumber");
+    binder.bindTwoWay(this, "customerName", model, "customerName");
+    binder.bindTwoWay(this, "customerEmail", model, "customerEmail");
+  }
+
+  save(data, callback) {
+    if (data.id && data.date && data.hotelName && data.roomNumber && data.customerName && data.customerEmail) {
+      this.id = data.id;
+      this.date = data.date;
+      this.hotelName = data.hotelName;
+      this.roomNumber = data.roomNumber;
+      this.customerName = data.customerName;
+      this.customerEmail = data.customerEmail;
+
+      if (callback) {
+        callback("Your reservation id is " + this.id + "!");
+      } 
+    } else {
+        if (callback) {
+          callback("Please, enter required data!");
+        }
+    }
+  }
+}
+
+
+window.onload = function() {
+  var reservation = new Reservation(0, new Date());
+
+  var viewModel = new ViewModel(reservation);
+  var view = new View(viewModel);
+
+};
+
+</script>
+</head>
+<body>
+
+<label>Date<input type="text" id="txtDate"></label><br/>
+<label>Hotel <input type="text" id="txtHotel"></label><br/>
+<label>Room n. <input type="text" id="txtRoomNumber"></label><br/>
+<label>Customer name <input type="text" id="txtCustomerName"></label><br/>
+<label>Customer e-mail <input type="text" id="txtCustomerEmail"></label><br/>
+<div id="divMessage"></div>
+<button id="btnSave">Save</button>
+<button id="btnReset">Reset</button>
+
+</body>
+</html>

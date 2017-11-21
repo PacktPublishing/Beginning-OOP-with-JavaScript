@@ -1,0 +1,29 @@
+<html>
+<head>
+<script>
+class Reservation {
+  constructor(reservationId, reservationDate, hotelName, roomNumber, customerName, customerEmail) {
+    this.id = reservationId;
+    this.date = reservationDate;
+    this.hotelName = hotelName;
+    this.roomNumber = roomNumber;
+    this.customerName = customerName;
+    this.customerEmail = customerEmail;
+  }
+}
+
+</script>
+</head>
+<body>
+
+<label>Date<input type="text" id="txtDate"></label><br/>
+<label>Hotel <input type="text" id="txtHotel"></label><br/>
+<label>Room n. <input type="text" id="txtRoomNumber"></label><br/>
+<label>Customer name <input type="text" id="txtCustomerName"></label><br/>
+<label>Customer e-mail <input type="text" id="txtCustomerEmail"></label><br/>
+<div id="divMessage"></div>
+<button id="btnSave">Save</button>
+<button id="btnReset">Reset</button>
+
+</body>
+</html>
